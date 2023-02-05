@@ -9,4 +9,4 @@ $RECYCLE.BIN/
 
 # Drink Mixer Files
 */inputs/*.json
-*/outputs/*.json
+*/output/*.json
