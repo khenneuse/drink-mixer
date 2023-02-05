@@ -8,5 +8,5 @@ $RECYCLE.BIN/
 .env
 
 # Drink Mixer Files
-setup/inputs/
-setup/outputs/
+*/inputs/*.json
+*/outputs/*.json
