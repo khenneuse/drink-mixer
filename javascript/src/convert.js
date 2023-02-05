@@ -1,5 +1,30 @@
 const fs = require("fs");
 const path = require("path");
+const yargs = require("yargs/yargs");
+const { hideBin } = require("yargs/helpers");
+
+const { splitIngredientsByType } = require("./utils");
+
+function parseArguments(inputArgs) {
+  return yargs(hideBin(inputArgs))
+    .option("inputs", {
+      alias: "i",
+      type: "string",
+      description: "The directory holding the JSON input files",
+    })
+    .demandOption("inputs")
+
+    .option("output", {
+      alias: "o",
+      type: "string",
+      description: "The directory where to store the output file drinks.json",
+    })
+    .demandOption("output")
+
+    .help()
+    .alias("help", "h")
+    .parse();
+}
 
 function handleError(err) {
   if (err) {
@@ -7,8 +32,10 @@ function handleError(err) {
   }
 }
 
-const inputPath = path.join(__dirname, "inputs");
-const outputPath = path.join(__dirname, "outputs");
+const argv = parseArguments(process.argv);
+
+const inputPath = argv.inputs.replace(/\/$/, "");
+const outputPath = argv.output.replace(/\/$/, "");
 
 if (!fs.existsSync(outputPath)) {
   fs.mkdirSync(outputPath);
@@ -45,16 +72,19 @@ inputs.forEach((file) => {
       currentDrink.strIngredient14,
       currentDrink.strIngredient15,
     ].filter(Boolean);
+    const split = splitIngredientsByType(ingredients);
     return {
       id: currentDrink.idDrink,
       name: currentDrink.strDrink,
       instructions: currentDrink.strInstructions,
-      ingredients,
-    }
+      ...split,
+    };
   });
 });
 
 const outputData = JSON.stringify(drinkMap);
-fs.writeFile(`${outputPath}/drinks.json`, outputData, handleError);
+const outputFilename = `${outputPath}/drinks.json`;
+fs.writeFile(outputFilename, outputData, handleError);
+console.log(`Output written to ${outputFilename}`);
 
 console.log("Processing Complete!");
