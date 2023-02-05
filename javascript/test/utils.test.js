@@ -133,6 +133,15 @@ describe("Utils", () => {
         )
       ).toBe(false);
     });
+
+    it("returns true when there are two of the same ingredients required", () => {
+      expect(
+        toTest.containsAllIngredients(
+          ["lemon", "lime", "lemon"],
+          ["cola", "cherry", "lemon", "lime"]
+        )
+      ).toBe(true);
+    });
   });
 
   describe("findDrinks", () => {
