@@ -1,0 +1,12 @@
+# MacOS system files
+.DS_Store
+
+# Windows system files
+$RECYCLE.BIN/
+
+# Local environment variables
+.env
+
+# Drink Mixer Files
+setup/inputs/
+setup/outputs/
